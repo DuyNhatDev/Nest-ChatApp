@@ -7,9 +7,11 @@ import CustomZodValidationPipe from '@/shared/pipes/custom-zod-validation.pipe'
 import { SharedModule } from '@/shared/shared.module'
 import { Module } from '@nestjs/common'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
+import { AuthModule } from './modules/auth/auth.module'
+import { UserModule } from './modules/user/user.module'
 
 @Module({
-  imports: [SharedModule, MongooseConfig],
+  imports: [SharedModule, MongooseConfig, AuthModule, UserModule],
   controllers: [AppController],
   providers: [
     AppService,
