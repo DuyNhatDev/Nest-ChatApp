@@ -1,3 +1,4 @@
+
 import { Errors } from '@/shared/types/erorr.type'
 import { Logger, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common'
 import { BaseExceptionFilter } from '@nestjs/core'
