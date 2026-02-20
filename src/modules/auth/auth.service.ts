@@ -1,9 +1,13 @@
-import { UserAlreadyExistsException } from '@/modules/auth/auth.error'
+import {
+  RefreshTokenAlreadyUsedException,
+  UnauthorizedAccessException,
+  UserAlreadyExistsException,
+} from '@/modules/auth/auth.error'
 import { RegisterBodyType, SignInBodyType } from '@/modules/auth/auth.model'
 import { AuthRepository } from '@/modules/auth/auth.reppsitory'
 import { UserType } from '@/modules/user/user.model'
 import { UserRepository } from '@/modules/user/user.repo'
-import { isUniqueConstraintMongoError } from '@/shared/helpers'
+import { isNotFoundMongooseError, isUniqueConstraintMongoError } from '@/shared/helpers'
 import { HashingService } from '@/shared/services/hashing.service'
 import { TokenService } from '@/shared/services/token.service'
 import { AccessTokenPayloadCreate } from '@/shared/types/jwt.type'
@@ -48,6 +52,23 @@ export class AuthService {
       message: 'Đăng nhập thành công',
       ...tokens,
       user: { _id, displayName, email, avatarUrl },
+    }
+  }
+
+  async signOut({ refreshToken }: { refreshToken: string }) {
+    try {
+      // 1. Kiểm tra refreshToken có hợp lệ không
+      await this.tokenService.verifyRefreshToken(refreshToken)
+      // 2. Xóa refreshToken trong database
+      await this.authRepository.deleteRefreshToken({
+        refreshToken,
+      })
+      return { message: 'Đăng xuất thành công' }
+    } catch (error) {
+      if (isNotFoundMongooseError(error)) {
+        throw RefreshTokenAlreadyUsedException
+      }
+      throw UnauthorizedAccessException
     }
   }
 

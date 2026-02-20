@@ -5,10 +5,11 @@ import { Public } from '@/shared/decorators/auth.decorator'
 import { SignInResDTO, SignUpBodyDTO, SignUpResDTO } from '@/modules/auth/auth.dto'
 import { LocalAuthGuard } from '@/shared/guards/local-auth.guard'
 import { UserType } from '@/modules/user/user.model'
-import { Request as ExpressRequest } from 'express'
-import type { Response } from 'express'
+import type { Request as ExpressRequest } from 'express'
+import type { Response as ExpressResponse } from 'express'
 import envConfig from '@/config/env.config'
 import ms from 'ms'
+import { MessageResDTO } from '@/shared/dtos/response.dto'
 
 @Controller('auth')
 export class AuthController {
@@ -27,7 +28,7 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @ZodResponse({ type: SignInResDTO })
-  async signIn(@Request() req: ExpressRequest & { user: UserType }, @Res({ passthrough: true }) res: Response) {
+  async signIn(@Request() req: ExpressRequest & { user: UserType }, @Res({ passthrough: true }) res: ExpressResponse) {
     const result = await this.authService.signIn(req.user)
     res.cookie('refreshToken', result.refreshToken, {
       httpOnly: true,
@@ -37,5 +38,13 @@ export class AuthController {
     })
     const { refreshToken, ...response } = result
     return response
+  }
+
+  @Post('signout')
+  @HttpCode(HttpStatus.OK)
+  @ZodResponse({ type: MessageResDTO })
+  signOut(@Request() req: ExpressRequest) {
+    const token = req.cookies?.refreshToken
+    return this.authService.signOut({ refreshToken: token })
   }
 }
