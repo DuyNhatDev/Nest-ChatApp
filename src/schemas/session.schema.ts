@@ -8,7 +8,7 @@ export class Session {
   @Prop({ required: true, ref: 'User', index: true })
   userId: Types.ObjectId
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   refreshToken: string
 
   @Prop({ required: true })

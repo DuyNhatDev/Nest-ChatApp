@@ -38,7 +38,7 @@ export const InvalidPasswordException = new UnauthorizedException({
 
 export const InvalidInformationLogin = new UnauthorizedException({
   message: 'Lỗi xác thực',
-  errors: [{ field: 'password', message: 'Email hoặc mật khẩu không chính xác' }],
+  errors: [{ field: 'password', message: 'Tên đăng nhập hoặc mật khẩu không chính xác' }],
 })
 
 export const ForbiddenAccessException = new ForbiddenException({
