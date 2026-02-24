@@ -22,6 +22,11 @@ export const UserAlreadyExistsException = new ConflictException({
   errors: [{ field: 'username', message: 'Tên người dùng đã được đăng ký' }],
 })
 
+export const EmailAlreadyExistsException = new ConflictException({
+  message: 'Lỗi xác thực',
+  errors: [{ field: 'email', message: 'Email đã được đăng ký' }],
+})
+
 export const EmailNotFoundException = new NotFoundException({
   message: 'Lỗi xác thực',
   errors: [{ field: 'email', message: 'Email không tồn tại' }],

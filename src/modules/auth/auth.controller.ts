@@ -19,7 +19,7 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @ZodResponse({ type: SignUpResDTO })
-  register(@Body() body: SignUpBodyDTO) {
+  signUp(@Body() body: SignUpBodyDTO) {
     return this.authService.signUp(body)
   }
 

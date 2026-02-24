@@ -1,4 +1,3 @@
-
 import { Errors } from '@/shared/types/erorr.type'
 import { Logger, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common'
 import { BaseExceptionFilter } from '@nestjs/core'
@@ -30,7 +29,8 @@ export class HttpExceptionFilter extends BaseExceptionFilter {
         field: err.path.join('.'),
         message: err.message,
       }))
-    } else {
+    }
+     else {
       // Trường hợp HttpException bình thường
       const res: any = exception.getResponse()
       status = exception.getStatus()

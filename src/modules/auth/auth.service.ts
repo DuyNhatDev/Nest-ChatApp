@@ -1,4 +1,5 @@
 import {
+  EmailAlreadyExistsException,
   RefreshTokenAlreadyUsedException,
   UnauthorizedAccessException,
   UserAlreadyExistsException,
@@ -23,9 +24,12 @@ export class AuthService {
   ) {}
   async signUp({ username, email, password, firstName, lastName }: RegisterBodyType) {
     try {
-      const user = await this.userRepository.findUnique({ username })
-      if (user) {
+      const userExist = await this.userRepository.findUnique({ username })
+      const emailExist = await this.userRepository.findUnique({ email })
+      if (userExist) {
         throw UserAlreadyExistsException
+      } else if (emailExist) {
+        throw EmailAlreadyExistsException
       } else {
         const hashedPassword = await this.hashingService.hash(password)
         await this.userRepository.create({

@@ -2,7 +2,7 @@ import { UserType } from '@/modules/user/user.model'
 import { MongooseService } from '@/shared/services/mongoose.service'
 import { Injectable } from '@nestjs/common'
 
-export type WhereUniqueUserType = { _id: string } | { username: string }
+export type WhereUniqueUserType = { _id: string } | { username: string } | { email: string }
 
 @Injectable()
 export class UserRepository {
