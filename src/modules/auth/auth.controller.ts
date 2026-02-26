@@ -43,8 +43,15 @@ export class AuthController {
   @Post('signout')
   @HttpCode(HttpStatus.OK)
   @ZodResponse({ type: MessageResDTO })
-  signOut(@Request() req: ExpressRequest) {
+  signOut(@Request() req: ExpressRequest, @Res({ passthrough: true }) res: ExpressResponse) {
     const token = req.cookies?.refreshToken
+    res.clearCookie('refreshToken', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: ms(envConfig.REFRESH_TOKEN_EXPIRES_IN as ms.StringValue),
+    })
+
     return this.authService.signOut({ refreshToken: token })
   }
 }

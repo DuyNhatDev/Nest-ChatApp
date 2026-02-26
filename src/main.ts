@@ -9,7 +9,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: ['error', 'warn', 'debug', 'verbose'],
   })
-  app.enableCors()
+  app.enableCors({
+    origin: envConfig.CLIENT_URL,
+    credentials: true,
+  })
   app.use(helmet())
   app.use(cookieParser())
   console.log(green('🚀 Nest application successfully started'))
