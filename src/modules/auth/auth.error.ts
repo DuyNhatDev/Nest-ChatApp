@@ -51,15 +51,15 @@ export const ForbiddenAccessException = new ForbiddenException({
 })
 
 export const NotTokenException = new UnauthorizedException({
-  message: 'Không có Access Token',
+  message: 'NOT_TOKEN',
 })
 
 export const InvalidTokenException = new UnauthorizedException({
-  message: 'Token không hợp lệ',
+  message: 'INVALID_TOKEN',
 })
 
 export const TokenExpiredException = new UnauthorizedException({
-  message: 'Token đã hết hạn',
+  message: 'TOKEN_EXPIRED',
 })
 
 export const NotVerifiedUserException = new UnauthorizedException({

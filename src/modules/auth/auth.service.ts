@@ -1,10 +1,12 @@
 import {
   EmailAlreadyExistsException,
+  InvalidTokenException,
   RefreshTokenAlreadyUsedException,
+  TokenExpiredException,
   UnauthorizedAccessException,
   UserAlreadyExistsException,
 } from '@/modules/auth/auth.error'
-import { RegisterBodyType, SignInBodyType } from '@/modules/auth/auth.model'
+import { RefreshTokenBodyType, RegisterBodyType, SignInBodyType } from '@/modules/auth/auth.model'
 import { AuthRepository } from '@/modules/auth/auth.reppsitory'
 import { UserType } from '@/modules/user/user.model'
 import { UserRepository } from '@/modules/user/user.repo'
@@ -12,7 +14,7 @@ import { isNotFoundMongooseError, isUniqueConstraintMongoError } from '@/shared/
 import { HashingService } from '@/shared/services/hashing.service'
 import { TokenService } from '@/shared/services/token.service'
 import { AccessTokenPayloadCreate } from '@/shared/types/jwt.type'
-import { Injectable } from '@nestjs/common'
+import { HttpException, Injectable } from '@nestjs/common'
 
 @Injectable()
 export class AuthService {
@@ -73,6 +75,42 @@ export class AuthService {
         throw RefreshTokenAlreadyUsedException
       }
       throw UnauthorizedAccessException
+    }
+  }
+
+  async refreshToken({ refreshToken }: RefreshTokenBodyType) {
+    try {
+      // 1. Kiểm tra refreshToken có hợp lệ không
+      const { userId } = await this.tokenService.verifyRefreshToken(refreshToken)
+
+      // 2. Kiểm tra refreshToken có tồn tại trong database không
+      const refreshTokenInDb = await this.authRepository.findUniqueRefreshTokenIncludeUser({
+        refreshToken,
+      })
+      if (!refreshTokenInDb) {
+        throw RefreshTokenAlreadyUsedException
+      }
+      if (new Date(refreshTokenInDb.expiresAt) < new Date()) {
+        throw TokenExpiredException
+      }
+
+      // 3. Xóa refreshToken cũ
+      const $deleteRefreshToken = this.authRepository.deleteRefreshToken({
+        refreshToken,
+      })
+      
+      // 4. Tạo accessToken và refreshToken mới
+      const $tokens = this.generateTokens({ userId })
+      const [, tokens] = await Promise.all([$deleteRefreshToken, $tokens])
+      return {
+        message: 'Refresh token thành công',
+        ...tokens,
+      }
+    } catch (error) {
+      if (error instanceof HttpException) {
+        throw error
+      }
+      throw InvalidTokenException
     }
   }
 

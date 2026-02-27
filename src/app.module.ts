@@ -9,6 +9,7 @@ import { Module } from '@nestjs/common'
 import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { AuthModule } from './modules/auth/auth.module'
 import { UserModule } from './modules/user/user.module'
+import { AuthGuard } from '@/shared/guards/auth.guard'
 
 @Module({
   imports: [SharedModule, MongooseConfig, AuthModule, UserModule],
@@ -24,10 +25,10 @@ import { UserModule } from './modules/user/user.module'
       provide: APP_PIPE,
       useClass: CustomZodValidationPipe,
     },
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: AuthGuard,
-    // },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
   ],
 })
 export class AppModule {}

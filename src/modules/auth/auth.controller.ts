@@ -2,7 +2,13 @@ import { Body, Controller, HttpCode, HttpStatus, Post, Request, Res, UseGuards }
 import { AuthService } from './auth.service'
 import { ZodResponse } from 'nestjs-zod'
 import { Public } from '@/shared/decorators/auth.decorator'
-import { SignInResDTO, SignUpBodyDTO, SignUpResDTO } from '@/modules/auth/auth.dto'
+import {
+  RefreshTokenBodyDTO,
+  RefreshTokenResDTO,
+  SignInResDTO,
+  SignUpBodyDTO,
+  SignUpResDTO,
+} from '@/modules/auth/auth.dto'
 import { LocalAuthGuard } from '@/shared/guards/local-auth.guard'
 import { UserType } from '@/modules/user/user.model'
 import type { Request as ExpressRequest } from 'express'
@@ -44,7 +50,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @ZodResponse({ type: MessageResDTO })
   signOut(@Request() req: ExpressRequest, @Res({ passthrough: true }) res: ExpressResponse) {
-    const token = req.cookies?.refreshToken
+    const refreshToken = req.cookies?.refreshToken
     res.clearCookie('refreshToken', {
       httpOnly: true,
       secure: true,
@@ -52,6 +58,23 @@ export class AuthController {
       maxAge: ms(envConfig.REFRESH_TOKEN_EXPIRES_IN as ms.StringValue),
     })
 
-    return this.authService.signOut({ refreshToken: token })
+    return this.authService.signOut({ refreshToken })
+  }
+
+  @Post('refresh-token')
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @ZodResponse({ type: RefreshTokenResDTO })
+  async refreshToken(@Request() req: ExpressRequest, @Res({ passthrough: true }) res: ExpressResponse) {
+    const refreshToken = req.cookies?.refreshToken
+    const result = await this.authService.refreshToken({ refreshToken })
+    const { refreshToken: newRefreshToken, ...response } = result
+    res.cookie('refreshToken', result.refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: ms(envConfig.REFRESH_TOKEN_EXPIRES_IN as ms.StringValue),
+    })
+    return response
   }
 }

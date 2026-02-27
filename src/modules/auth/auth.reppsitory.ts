@@ -19,4 +19,14 @@ export class AuthRepository {
   deleteRefreshToken(refreshToken: { refreshToken: string }) {
     return this.mongooseService.session.deleteOne(refreshToken)
   }
+
+  findUniqueRefreshTokenIncludeUser(refreshToken: {
+    refreshToken: string
+  }): Promise<(RefreshTokenType & { user: UserType }) | null> {
+    return this.mongooseService.session
+      .findOne(refreshToken)
+      .populate('user')
+      .lean<RefreshTokenType & { user: UserType }>()
+  }
 }
+
