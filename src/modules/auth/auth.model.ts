@@ -35,12 +35,6 @@ export const RefreshTokenSchema = z.object({
   createdAt: z.date(),
 })
 
-export const RefreshTokenBodySchema = z
-  .object({
-    refreshToken: z.string(),
-  })
-  .strict()
-
   export const RefreshTokenResSchema = SignInResSchema.omit({ user: true })
 
 export type RegisterBodyType = z.infer<typeof SignUpBodySchema>
@@ -48,4 +42,3 @@ export type RegisterResType = z.infer<typeof SignUpResSchema>
 export type SignInBodyType = z.infer<typeof SignInBodySchema>
 export type SignInResType = z.infer<typeof SignInResSchema>
 export type RefreshTokenType = z.infer<typeof RefreshTokenSchema>
-export type RefreshTokenBodyType = z.infer<typeof RefreshTokenBodySchema>

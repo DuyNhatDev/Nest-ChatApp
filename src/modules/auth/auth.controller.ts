@@ -3,7 +3,6 @@ import { AuthService } from './auth.service'
 import { ZodResponse } from 'nestjs-zod'
 import { Public } from '@/shared/decorators/auth.decorator'
 import {
-  RefreshTokenBodyDTO,
   RefreshTokenResDTO,
   SignInResDTO,
   SignUpBodyDTO,

@@ -6,7 +6,7 @@ import {
   UnauthorizedAccessException,
   UserAlreadyExistsException,
 } from '@/modules/auth/auth.error'
-import { RefreshTokenBodyType, RegisterBodyType, SignInBodyType } from '@/modules/auth/auth.model'
+import { RegisterBodyType, SignInBodyType } from '@/modules/auth/auth.model'
 import { AuthRepository } from '@/modules/auth/auth.reppsitory'
 import { UserType } from '@/modules/user/user.model'
 import { UserRepository } from '@/modules/user/user.repo'
@@ -78,7 +78,7 @@ export class AuthService {
     }
   }
 
-  async refreshToken({ refreshToken }: RefreshTokenBodyType) {
+  async refreshToken({ refreshToken }: { refreshToken: string }) {
     try {
       // 1. Kiểm tra refreshToken có hợp lệ không
       const { userId } = await this.tokenService.verifyRefreshToken(refreshToken)
@@ -98,7 +98,7 @@ export class AuthService {
       const $deleteRefreshToken = this.authRepository.deleteRefreshToken({
         refreshToken,
       })
-      
+
       // 4. Tạo accessToken và refreshToken mới
       const $tokens = this.generateTokens({ userId })
       const [, tokens] = await Promise.all([$deleteRefreshToken, $tokens])
