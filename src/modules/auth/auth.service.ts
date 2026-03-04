@@ -7,9 +7,9 @@ import {
   UserAlreadyExistsException,
 } from '@/modules/auth/auth.error'
 import { RegisterBodyType, SignInBodyType } from '@/modules/auth/auth.model'
-import { AuthRepository } from '@/modules/auth/auth.reppsitory'
+import { AuthRepository } from '@/modules/auth/auth.repository'
 import { UserType } from '@/modules/user/user.model'
-import { UserRepository } from '@/modules/user/user.repo'
+import { UserRepository } from '@/modules/user/user.repository'
 import { isNotFoundMongooseError, isUniqueConstraintMongoError } from '@/shared/helpers'
 import { HashingService } from '@/shared/services/hashing.service'
 import { TokenService } from '@/shared/services/token.service'

@@ -7,16 +7,6 @@ import {
   ForbiddenException,
 } from '@nestjs/common'
 
-export const InvalidOTPException = new UnprocessableEntityException({
-  message: 'Lỗi xác thực',
-  errors: [{ field: 'code', message: 'Mã OTP không chính xác' }],
-})
-
-export const OTPExpiredException = new BadRequestException({
-  message: 'Lỗi xác thực',
-  errors: [{ field: 'code', message: 'Mã OTP đã hết hạn' }],
-})
-
 export const UserAlreadyExistsException = new ConflictException({
   message: 'Lỗi xác thực',
   errors: [{ field: 'username', message: 'Tên người dùng đã được đăng ký' }],
@@ -62,9 +52,6 @@ export const TokenExpiredException = new UnauthorizedException({
   message: 'TOKEN_EXPIRED',
 })
 
-export const NotVerifiedUserException = new UnauthorizedException({
-  message: 'Tài khoản chưa được xác minh',
-})
 
 export const BlockedUserException = new UnauthorizedException({
   message: 'Tài khoản đã bị khóa',

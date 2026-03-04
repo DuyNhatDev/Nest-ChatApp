@@ -10,9 +10,10 @@ import { APP_FILTER, APP_GUARD, APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core'
 import { AuthModule } from './modules/auth/auth.module'
 import { UserModule } from './modules/user/user.module'
 import { AuthGuard } from '@/shared/guards/auth.guard'
+import { FriendModule } from './modules/friend/friend.module';
 
 @Module({
-  imports: [SharedModule, MongooseConfig, AuthModule, UserModule],
+  imports: [SharedModule, MongooseConfig, AuthModule, UserModule, FriendModule],
   controllers: [AppController],
   providers: [
     AppService,

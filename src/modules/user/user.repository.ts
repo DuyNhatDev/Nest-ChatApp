@@ -21,4 +21,8 @@ export class UserRepository {
   update(where: WhereUniqueUserType, data: Partial<UserType>): Promise<UserType | null> {
     return this.mongooseService.user.findOneAndUpdate(where, data, { new: true }).lean<UserType>()
   }
+
+  checkExist(where: WhereUniqueUserType) {
+    return this.mongooseService.user.exists(where)
+  }
 }

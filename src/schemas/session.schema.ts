@@ -5,7 +5,7 @@ export type SessionDocument = HydratedDocument<Session>
 
 @Schema({ timestamps: true })
 export class Session {
-  @Prop({ required: true, ref: 'User', index: true })
+  @Prop({ ref: 'User', type: Types.ObjectId, required: true, index: true })
   userId: Types.ObjectId
 
   @Prop({ required: true, unique: true })

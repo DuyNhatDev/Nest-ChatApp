@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { HydratedDocument } from 'mongoose'
-const mongooseDelete = require('mongoose-delete')
 
 export type UserDocument = HydratedDocument<User>
 
@@ -32,8 +31,3 @@ export class User {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User)
-
-UserSchema.plugin(mongooseDelete, {
-  deletedAt: true,
-  index: true,
-})

@@ -1,5 +1,9 @@
-import { AuthRepository } from '@/modules/auth/auth.reppsitory'
-import { UserRepository } from '@/modules/user/user.repo'
+import { AuthRepository } from '@/modules/auth/auth.repository'
+import { UserRepository } from '@/modules/user/user.repository'
+import { Conversation, ConversationSchema } from '@/schemas/conversation.schema'
+import { FriendRequest, FriendRequestSchema } from '@/schemas/friend-request.schema'
+import { Friend, FriendSchema } from '@/schemas/friend.schema'
+import { Message, MessageSchema } from '@/schemas/message.schema'
 import { Session, SessionSchema } from '@/schemas/session.schema'
 import { User, UserSchema } from '@/schemas/user.schema'
 import { HashingService } from '@/shared/services/hashing.service'
@@ -14,6 +18,10 @@ const sharedServices = [MongooseService, HashingService, TokenService, UserRepos
 const mongooseModels = [
   { name: User.name, schema: UserSchema },
   { name: Session.name, schema: SessionSchema },
+  { name: Message.name, schema: MessageSchema },
+  { name: Conversation.name, schema: ConversationSchema },
+  { name: Friend.name, schema: FriendSchema },
+  { name: FriendRequest.name, schema: FriendRequestSchema },
 ]
 
 @Global()

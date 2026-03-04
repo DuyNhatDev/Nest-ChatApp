@@ -1,4 +1,4 @@
-import { UserRepository } from '@/modules/user/user.repo'
+import { UserRepository } from '@/modules/user/user.repository'
 import { TokenService } from '@/shared/services/token.service'
 import { Injectable } from '@nestjs/common'
 

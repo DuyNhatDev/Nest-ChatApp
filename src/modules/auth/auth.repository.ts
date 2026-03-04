@@ -1,6 +1,6 @@
 import { RefreshTokenType } from '@/modules/auth/auth.model'
 import { UserType } from '@/modules/user/user.model'
-import { WhereUniqueUserType } from '@/modules/user/user.repo'
+import { WhereUniqueUserType } from '@/modules/user/user.repository'
 import { MongooseService } from '@/shared/services/mongoose.service'
 import { Injectable } from '@nestjs/common'
 
@@ -29,4 +29,3 @@ export class AuthRepository {
       .lean<RefreshTokenType & { user: UserType }>()
   }
 }
-
