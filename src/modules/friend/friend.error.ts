@@ -7,3 +7,7 @@ export const CannotFriendSelfException = new BadRequestException({
 export const UserNotFoundException = new NotFoundException({
   message: 'Người dùng không tồn tại',
 })
+
+export const AlreadyFriendException = new BadRequestException({
+  message: 'Hai người đã là bạn bè',
+})

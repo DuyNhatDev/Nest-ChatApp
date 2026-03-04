@@ -8,6 +8,7 @@ const CustomZodValidationPipe: any = createZodValidationPipe({
     return new UnprocessableEntityException({
       success: false,
       statusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+      code: 'VALIDATION_FAILED',
       message: 'Validation failed',
       errors: issues.map((issue: any) => ({
         field: issue.path?.join('.') ?? '',

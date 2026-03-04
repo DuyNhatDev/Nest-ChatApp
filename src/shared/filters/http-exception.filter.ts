@@ -12,6 +12,7 @@ export class HttpExceptionFilter extends BaseExceptionFilter {
     const ctx = host.switchToHttp()
     const response = ctx.getResponse()
     let status = exception.getStatus ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR
+    let code = 'INTERNAL_SERVER_ERROR'
     let message = 'Đã có lỗi xảy ra'
     let errors: Errors[] | undefined
 
@@ -24,13 +25,13 @@ export class HttpExceptionFilter extends BaseExceptionFilter {
       }
 
       status = HttpStatus.UNPROCESSABLE_ENTITY
+      code = 'VALIDATION_FAILED'
       message = 'Dữ liệu không hợp lệ'
       errors = (zodError as any).errors.map((err) => ({
         field: err.path.join('.'),
         message: err.message,
       }))
-    }
-     else {
+    } else {
       // Trường hợp HttpException bình thường
       const res: any = exception.getResponse()
       status = exception.getStatus()
@@ -39,6 +40,7 @@ export class HttpExceptionFilter extends BaseExceptionFilter {
         message = res
       } else if (typeof res === 'object' && res !== null) {
         message = res.message || message
+        code = res.code || code
         if (res.errors) {
           errors = res.errors
         }
@@ -48,6 +50,7 @@ export class HttpExceptionFilter extends BaseExceptionFilter {
     const errorResponse = {
       statusCode: status,
       success: false,
+      code,
       message,
       errors,
     }
