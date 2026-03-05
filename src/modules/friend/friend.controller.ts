@@ -16,7 +16,6 @@ export class FriendController {
   constructor(private readonly friendService: FriendService) {}
 
   @Post('requests')
-  @HttpCode(HttpStatus.OK)
   @ZodResponse({ type: SendFriendRequestResDTO })
   sendFriendRequest(
     @Request() req: ExpressRequest & { user: { userId: string } },
@@ -50,7 +49,6 @@ export class FriendController {
   }
 
   @Get()
-  @HttpCode(HttpStatus.OK)
   @ZodResponse({ type: GetAllFriendsResDTO })
   getAllFriends(@Request() req: ExpressRequest & { user: { userId: string } }) {
     const { userId } = req.user
@@ -58,7 +56,6 @@ export class FriendController {
   }
 
   @Get('requests')
-  @HttpCode(HttpStatus.OK)
   @ZodResponse({ type: GetAllFriendRequestsResDTO })
   getAllFriendRequests(@Request() req: ExpressRequest & { user: { userId: string } }) {
     const { userId } = req.user

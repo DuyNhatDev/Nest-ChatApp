@@ -71,7 +71,7 @@ export class Conversation {
   lastMessage: LastMessage
 
   @Prop({ type: Map, of: Number, default: {} })
-  unreadCount: Map<string, number>
+  unreadCounts: Map<string, number>
 }
 
 export const ConversationSchema = SchemaFactory.createForClass(Conversation)
