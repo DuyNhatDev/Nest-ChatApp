@@ -9,7 +9,7 @@ export class UserRepository {
   constructor(private readonly mongooseService: MongooseService) {}
 
   findUnique(where: WhereUniqueUserType): Promise<Omit<UserType, 'password'> | null> {
-    return this.mongooseService.user.findOne(where)
+    return this.mongooseService.user.findOne(where).lean<UserType>()
   }
 
   async create(data: Partial<UserType>): Promise<Omit<UserType, 'password'>> {

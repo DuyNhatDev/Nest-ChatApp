@@ -17,7 +17,7 @@ export class AuthRepository {
   }
 
   deleteRefreshToken(refreshToken: { refreshToken: string }) {
-    return this.mongooseService.session.deleteOne(refreshToken)
+    return this.mongooseService.session.deleteOne(refreshToken).lean<RefreshTokenType>()
   }
 
   findUniqueRefreshTokenIncludeUser(refreshToken: {

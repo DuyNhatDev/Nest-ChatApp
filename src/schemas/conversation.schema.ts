@@ -75,5 +75,3 @@ export class Conversation {
 }
 
 export const ConversationSchema = SchemaFactory.createForClass(Conversation)
-
-

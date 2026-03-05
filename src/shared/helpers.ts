@@ -3,6 +3,9 @@ import { MongoServerError } from 'mongodb'
 import mongoose from 'mongoose'
 import { v4 as uuidv4 } from 'uuid'
 import path from 'path'
+import { string } from 'zod'
+import { InternalServerException } from '@/shared/error'
+import { HttpException } from '@nestjs/common'
 
 export function isUniqueConstraintMongoError(error: any): error is MongoServerError {
   return error instanceof MongoServerError && error.code === 11000

@@ -1,4 +1,3 @@
-
 export const TypeOfVerificationCode = {
   REGISTER: 'REGISTER',
   RESET_PASSWORD: 'RESET_PASSWORD',

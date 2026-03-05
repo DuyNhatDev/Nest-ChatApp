@@ -35,7 +35,7 @@ export const RefreshTokenSchema = z.object({
   createdAt: z.date(),
 })
 
-  export const RefreshTokenResSchema = SignInResSchema.omit({ user: true })
+export const RefreshTokenResSchema = SignInResSchema.omit({ user: true })
 
 export type RegisterBodyType = z.infer<typeof SignUpBodySchema>
 export type RegisterResType = z.infer<typeof SignUpResSchema>
