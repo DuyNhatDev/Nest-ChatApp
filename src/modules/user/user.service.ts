@@ -4,12 +4,8 @@ import { Injectable } from '@nestjs/common'
 
 @Injectable()
 export class UserService {
-  constructor(
-    private readonly userRepository: UserRepository,
-    private readonly tokenService: TokenService,
-  ) {}
-  async getMe(accessToken: string) {
-    const { userId } = await this.tokenService.verifyAccessToken(accessToken)
+  constructor(private readonly userRepository: UserRepository) {}
+  async getMe(userId: string) {
     return this.userRepository.findUnique({ _id: userId })
   }
 }

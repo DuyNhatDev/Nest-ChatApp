@@ -3,7 +3,7 @@ import { Request } from 'express'
 import { MongooseService } from '@/shared/services/mongoose.service'
 
 @Injectable()
-export class CheckFriendshipGuard implements CanActivate {
+export class FriendshipGuard implements CanActivate {
   constructor(private readonly mongooseService: MongooseService) {}
 
   private pair(a: string, b: string) {

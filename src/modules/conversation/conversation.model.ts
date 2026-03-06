@@ -34,7 +34,14 @@ export const ConversationSchema = z.object({
   updatedAt: z.date(),
 })
 
+export const CreateConversationBodySchema = z.object({
+  type: ConversationTypeSchema,
+  name: z.string(),
+  memberIds: z.array(ObjectIdSchema),
+})
+
 export type GroupType = z.infer<typeof GroupSchema>
 export type ConversationType = z.infer<typeof ConversationSchema>
 export type ParticipantType = z.infer<typeof ParticipantSchema>
 export type LastMessageType = z.infer<typeof LastMessageSchema>
+export type CreateConversationBodyType = z.infer<typeof CreateConversationBodySchema>

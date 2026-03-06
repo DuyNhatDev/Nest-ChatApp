@@ -1,12 +1,11 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Request, Res, UseGuards } from '@nestjs/common'
+import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UseGuards } from '@nestjs/common'
 import { AuthService } from './auth.service'
 import { ZodResponse } from 'nestjs-zod'
 import { Public } from '@/shared/decorators/auth.decorator'
 import { RefreshTokenResDTO, SignInResDTO, SignUpBodyDTO, SignUpResDTO } from '@/modules/auth/auth.dto'
 import { LocalAuthGuard } from '@/shared/guards/local-auth.guard'
 import { UserType } from '@/modules/user/user.model'
-import type { Request as ExpressRequest } from 'express'
-import type { Response as ExpressResponse } from 'express'
+import type { Request, Response } from 'express'
 import envConfig from '@/config/env.config'
 import ms from 'ms'
 import { MessageResDTO } from '@/shared/dtos/response.dto'
@@ -28,7 +27,7 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @ZodResponse({ type: SignInResDTO })
-  async signIn(@Request() req: ExpressRequest & { user: UserType }, @Res({ passthrough: true }) res: ExpressResponse) {
+  async signIn(@Req() req: Request & { user: UserType }, @Res({ passthrough: true }) res: Response) {
     const result = await this.authService.signIn(req.user)
     res.cookie('refreshToken', result.refreshToken, {
       httpOnly: true,
@@ -43,7 +42,7 @@ export class AuthController {
   @Post('signout')
   @HttpCode(HttpStatus.OK)
   @ZodResponse({ type: MessageResDTO })
-  signOut(@Request() req: ExpressRequest, @Res({ passthrough: true }) res: ExpressResponse) {
+  signOut(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const refreshToken = req.cookies?.refreshToken
     res.clearCookie('refreshToken', {
       httpOnly: true,
@@ -59,7 +58,7 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @ZodResponse({ type: RefreshTokenResDTO })
-  async refreshToken(@Request() req: ExpressRequest, @Res({ passthrough: true }) res: ExpressResponse) {
+  async refreshToken(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     const refreshToken = req.cookies?.refreshToken
     const result = await this.authService.refreshToken({ refreshToken })
     const { refreshToken: newRefreshToken, ...response } = result
