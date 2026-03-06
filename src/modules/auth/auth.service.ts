@@ -115,7 +115,7 @@ export class AuthService {
   }
 
   async validateUser({ username, password }: SignInBodyType) {
-    const user = await this.authRepository.findUniqueUser({
+    const user = await this.authRepository.findUniqueUserWithPassword({
       username,
     })
     if (!user) {
@@ -125,7 +125,14 @@ export class AuthService {
     if (!isPasswordMatch) {
       return null
     }
-    return user
+    const safeUser = {
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      displayName: user.displayName,
+      avatarUrl: user.avatarUrl,
+    }
+    return safeUser
   }
 
   async generateTokens({ userId }: AccessTokenPayloadCreate) {

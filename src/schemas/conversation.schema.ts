@@ -3,7 +3,7 @@ import { HydratedDocument, Types } from 'mongoose'
 
 export type ConversationDocument = HydratedDocument<Conversation>
 
-export enum ConversationType {
+enum ConversationType {
   DIRECT = 'direct',
   GROUP = 'group',
 }

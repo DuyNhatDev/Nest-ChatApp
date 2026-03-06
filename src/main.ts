@@ -13,6 +13,7 @@ async function bootstrap() {
     origin: envConfig.CLIENT_URL,
     credentials: true,
   })
+  //app.setGlobalPrefix('api')
   app.use(helmet())
   app.use(cookieParser())
   console.log(green('🚀 Nest application successfully started'))

@@ -9,6 +9,7 @@ import type { Request, Response } from 'express'
 import envConfig from '@/config/env.config'
 import ms from 'ms'
 import { MessageResDTO } from '@/shared/dtos/response.dto'
+import { ActiveUser } from '@/shared/decorators/active-user.decorator'
 
 @Controller('auth')
 export class AuthController {
@@ -27,8 +28,8 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @ZodResponse({ type: SignInResDTO })
-  async signIn(@Req() req: Request & { user: UserType }, @Res({ passthrough: true }) res: Response) {
-    const result = await this.authService.signIn(req.user)
+  async signIn(@ActiveUser() user, @Res({ passthrough: true }) res: Response) {
+    const result = await this.authService.signIn(user)
     res.cookie('refreshToken', result.refreshToken, {
       httpOnly: true,
       secure: true,

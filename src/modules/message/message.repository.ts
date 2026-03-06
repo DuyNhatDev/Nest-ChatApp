@@ -22,7 +22,7 @@ export class MessageRepository {
     })
   }
 
-  async createMessage(data: { conversationId: string; senderId: string; content: string }): Promise<MessageType> {
+  async createMessage(data: Partial<MessageType>): Promise<MessageType> {
     const message = await this.mongooseService.message.create(data)
     return message.toObject() as unknown as MessageType
   }

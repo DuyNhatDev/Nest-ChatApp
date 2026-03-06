@@ -5,14 +5,14 @@ export const ConversationTypeSchema = z.enum(['direct', 'group'])
 
 export const ParticipantSchema = z.object({
   userId: ObjectIdSchema,
-  joinedAt: z.date().default(() => new Date()),
+  joinedAt: z.date().default(() => new Date()).optional(),
 })
 
 export const LastMessageSchema = z.object({
   _id: z.string(),
-  content: z.string().nullable().default(null),
-  senderId: ObjectIdSchema.nullable().default(null),
-  createdAt: z.date().nullable().default(null),
+  content: z.string().optional(),
+  senderId: ObjectIdSchema.optional(),
+  createdAt: z.date().optional(),
 })
 
 export const GroupSchema = z.object({
@@ -28,7 +28,7 @@ export const ConversationSchema = z.object({
   group: GroupSchema,
   lastMessageAt: z.date().optional(),
   seenBy: z.array(ObjectIdSchema),
-  lastMessage: LastMessageSchema.nullable().default(null),
+  lastMessage: LastMessageSchema.optional(),
   unreadCount: z.record(z.string(), z.number().int().min(0)).default({}),
   createdAt: z.date(),
   updatedAt: z.date(),

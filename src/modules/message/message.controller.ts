@@ -1,16 +1,17 @@
-import { Body, Controller, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common'
+import { Body, Controller, Post, UseGuards } from '@nestjs/common'
 import { MessageService } from './message.service'
-import type { Request } from 'express'
-import { SendDirectMessageBodyDto } from '@/modules/message/message.dto'
+import { SendDirectMessageBodyDto, SendDirectMessageResDto } from '@/modules/message/message.dto'
 import { FriendshipGuard } from '@/shared/guards/friendship.guard'
+import { ZodResponse } from 'nestjs-zod'
+import { ActiveUser } from '@/shared/decorators/active-user.decorator'
 
 @Controller('messages')
 export class MessageController {
   constructor(private readonly messageService: MessageService) {}
   @Post('direct')
   @UseGuards(FriendshipGuard)
-  sendDirectMessage(@Req() req: Request & { user: { userId: string } }, @Body() body: SendDirectMessageBodyDto) {
-    const { userId } = req.user
+  @ZodResponse({ type: SendDirectMessageResDto })
+  sendDirectMessage(@ActiveUser('userId') userId: string, @Body() body: SendDirectMessageBodyDto) {
     return this.messageService.sendDirectMessage({ senderId: userId, ...body })
   }
 }

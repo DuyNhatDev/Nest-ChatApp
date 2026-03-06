@@ -15,10 +15,9 @@ export class FriendshipGuard implements CanActivate {
     const user = request.user as { userId: string }
     const me = user.userId.toString()
     const recipientId = request.body?.recipientId ?? null
-    //const memberIds = request.body?.memberIds ?? []
+    const memberIds = request.body?.memberIds ?? []
 
-    //if (!recipientId && memberIds.length === 0) {
-    if (!recipientId) {
+    if (!recipientId && memberIds.length === 0) {
       throw new BadRequestException({
         message: 'Cần cung cấp recipientId hoặc memberId',
         code: 'MISSING_RECIPIENT_ID_OR_MEMBER_ID',
@@ -41,23 +40,23 @@ export class FriendshipGuard implements CanActivate {
       return true
     }
 
-    // group
-    // const checks = await Promise.all(
-    //   memberIds.map(async (memberId: string) => {
-    //     const [userA, userB] = this.pair(me, memberId)
-    //     const friend = await this.mongooseService.friend.exists({ userA, userB })
-    //     return friend ? null : memberId
-    //   }),
-    // )
+    //group
+    const checks = await Promise.all(
+      memberIds.map(async (memberId: string) => {
+        const [userA, userB] = this.pair(me, memberId)
+        const friend = await this.mongooseService.friend.exists({ userA, userB })
+        return friend ? null : memberId
+      }),
+    )
 
-    // const notFriends = checks.filter(Boolean)
+    const notFriends = checks.filter(Boolean)
 
-    // if (notFriends.length > 0) {
-    //   throw new ForbiddenException({
-    //     message: 'Bạn chỉ có thể thêm bạn bè vào nhóm.',
-    //     notFriends,
-    //   })
-    // }
+    if (notFriends.length > 0) {
+      throw new ForbiddenException({
+        message: 'Bạn chỉ có thể thêm bạn bè vào nhóm.',
+        notFriends,
+      })
+    }
 
     return true
   }

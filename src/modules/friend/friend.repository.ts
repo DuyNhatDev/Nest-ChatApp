@@ -41,7 +41,7 @@ export class FriendRepository {
     })
   }
 
-  async createFriendRequest(data: { from: string; to: string; message?: string }): Promise<FriendRequestType> {
+  async createFriendRequest(data: Partial<FriendRequestType>): Promise<FriendRequestType> {
     const request = await this.mongooseService.friendRequest.create(data)
     return request.toObject() as unknown as FriendRequestType
   }
@@ -50,8 +50,8 @@ export class FriendRepository {
     return this.mongooseService.friendRequest.findById(requestId).lean<FriendRequestType>()
   }
 
-  async createFriendship({ userA, userB }: { userA: string; userB: string }): Promise<FriendType> {
-    const friendship = await this.mongooseService.friend.create({ userA, userB })
+  async createFriendship(data: Partial<FriendType>): Promise<FriendType> {
+    const friendship = await this.mongooseService.friend.create(data)
     return friendship.toObject() as unknown as FriendType
   }
 

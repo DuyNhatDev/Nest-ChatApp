@@ -8,7 +8,10 @@ import { Injectable } from '@nestjs/common'
 export class AuthRepository {
   constructor(private readonly mongooseService: MongooseService) {}
 
-  findUniqueUser(where: WhereUniqueUserType): Promise<UserType | null> {
+  findUniqueUser(where: WhereUniqueUserType): Promise<Omit<UserType, 'password'> | null> {
+    return this.mongooseService.user.findOne(where).lean<UserType>()
+  }
+  findUniqueUserWithPassword(where: WhereUniqueUserType): Promise<UserType | null> {
     return this.mongooseService.user.findOne(where).select('+password').lean<UserType>()
   }
 
