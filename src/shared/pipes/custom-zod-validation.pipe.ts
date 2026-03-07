@@ -2,7 +2,7 @@ import { HttpStatus, UnprocessableEntityException } from '@nestjs/common'
 import { createZodValidationPipe } from 'nestjs-zod'
 import { ZodError } from 'zod'
 
-const CustomZodValidationPipe: any = createZodValidationPipe({
+export const CustomZodValidationPipe = createZodValidationPipe({
   createValidationException: (error: ZodError | any) => {
     const issues = error?.issues ?? []
     return new UnprocessableEntityException({
@@ -17,5 +17,3 @@ const CustomZodValidationPipe: any = createZodValidationPipe({
     })
   },
 })
-
-export default CustomZodValidationPipe

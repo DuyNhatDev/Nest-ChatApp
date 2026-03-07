@@ -26,6 +26,4 @@ export class MessageRepository {
     const message = await this.mongooseService.message.create(data)
     return message.toObject() as unknown as MessageType
   }
-
-  
 }
