@@ -1,6 +1,12 @@
-import { SendDirectMessageBodySchema, SenDirectMessageResSchema } from '@/modules/message/message.model'
+import {
+  SendDirectMessageBodySchema,
+  SendGroupMessageBodySchema,
+  SenDirectMessageResSchema,
+} from '@/modules/message/message.model'
 import { createZodDto } from 'nestjs-zod'
 
-export class SendDirectMessageBodyDto extends createZodDto(SendDirectMessageBodySchema) {}
+export class SendDirectMessageBodyDTO extends createZodDto(SendDirectMessageBodySchema) {}
 
-export class SendDirectMessageResDto extends createZodDto(SenDirectMessageResSchema) {}
+export class SendDirectMessageResDTO extends createZodDto(SenDirectMessageResSchema) {}
+
+export class SendGroupMessageBodyDTO extends createZodDto(SendGroupMessageBodySchema) {}

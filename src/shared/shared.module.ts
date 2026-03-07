@@ -13,7 +13,13 @@ import { Global, Module } from '@nestjs/common'
 import { JwtModule } from '@nestjs/jwt'
 import { MongooseModule } from '@nestjs/mongoose'
 
-const sharedServices = [MongooseService, HashingService, TokenService, UserRepository, AuthRepository]
+const sharedServices = [
+  MongooseService,
+  HashingService,
+  TokenService,
+  UserRepository,
+  AuthRepository,
+]
 
 const mongooseModels = [
   { name: User.name, schema: UserSchema },

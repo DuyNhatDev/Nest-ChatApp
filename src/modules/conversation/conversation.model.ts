@@ -5,7 +5,10 @@ export const ConversationTypeSchema = z.enum(['direct', 'group'])
 
 export const ParticipantSchema = z.object({
   userId: ObjectIdSchema,
-  joinedAt: z.date().default(() => new Date()).optional(),
+  joinedAt: z
+    .date()
+    .default(() => new Date())
+    .optional(),
 })
 
 export const LastMessageSchema = z.object({
@@ -40,8 +43,14 @@ export const CreateConversationBodySchema = z.object({
   memberIds: z.array(ObjectIdSchema),
 })
 
+export const GetMessagesQuerySchema = z.object({
+  limit: z.coerce.number().int().positive().default(50),
+  cursor: z.string().optional(),
+})
+
 export type GroupType = z.infer<typeof GroupSchema>
 export type ConversationType = z.infer<typeof ConversationSchema>
 export type ParticipantType = z.infer<typeof ParticipantSchema>
 export type LastMessageType = z.infer<typeof LastMessageSchema>
 export type CreateConversationBodyType = z.infer<typeof CreateConversationBodySchema>
+export type GetMessagesQueryType = z.infer<typeof GetMessagesQuerySchema>

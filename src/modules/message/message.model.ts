@@ -16,8 +16,11 @@ export const SendDirectMessageBodySchema = z.object({
   recipientId: ObjectIdSchema,
 })
 
+export const SendGroupMessageBodySchema = SendDirectMessageBodySchema.omit({ recipientId: true })
+
 export const SenDirectMessageResSchema = MessageSchema
 
 export type MessageType = z.infer<typeof MessageSchema>
 export type SendDirectMessageBodyType = z.infer<typeof SendDirectMessageBodySchema>
 export type SendDirectMessageResType = z.infer<typeof SenDirectMessageResSchema>
+export type SendGroupMessageBodyType = z.infer<typeof SendGroupMessageBodySchema>

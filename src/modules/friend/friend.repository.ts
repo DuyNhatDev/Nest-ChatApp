@@ -85,7 +85,11 @@ export class FriendRepository {
       .lean<AllFriendRequestsSentType[]>()
   }
 
-  getAllFriendRequestsReceived({ userId }: { userId: string }): Promise<AllFriendRequestsReceivedType[]> {
+  getAllFriendRequestsReceived({
+    userId,
+  }: {
+    userId: string
+  }): Promise<AllFriendRequestsReceivedType[]> {
     {
       return this.mongooseService.friendRequest
         .find({ to: userId })

@@ -27,3 +27,5 @@ export const generateRandomFilename = (filename: string) => {
   const ext = path.extname(filename)
   return `${uuidv4()}${ext}`
 }
+
+export const convertStringToObjectId = (id: string) => new mongoose.Types.ObjectId(id)

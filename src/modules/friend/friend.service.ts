@@ -68,7 +68,9 @@ export class FriendService {
     // 4. Xóa lời mời kết bạn
     await this.friendRepository.deleteFriendRequest({ requestId })
     // 5. Trả về thông tin người gửi lời mời kết bạn
-    const from = await this.friendRepository.getUserAfterAcceptFriendRequest({ userId: request.from })
+    const from = await this.friendRepository.getUserAfterAcceptFriendRequest({
+      userId: request.from,
+    })
     return {
       message: 'Chấp nhận lời mời kết bạn thành công',
       newFriend: {

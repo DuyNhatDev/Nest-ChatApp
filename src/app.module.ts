@@ -11,11 +11,19 @@ import { AuthModule } from './modules/auth/auth.module'
 import { UserModule } from './modules/user/user.module'
 import { AuthGuard } from '@/shared/guards/auth.guard'
 import { FriendModule } from './modules/friend/friend.module'
-import { MessageModule } from './modules/message/message.module';
-import { ConversationModule } from './modules/conversation/conversation.module';
+import { MessageModule } from './modules/message/message.module'
+import { ConversationModule } from './modules/conversation/conversation.module'
 
 @Module({
-  imports: [SharedModule, MongooseConfig, AuthModule, UserModule, FriendModule, MessageModule, ConversationModule],
+  imports: [
+    SharedModule,
+    MongooseConfig,
+    AuthModule,
+    UserModule,
+    FriendModule,
+    MessageModule,
+    ConversationModule,
+  ],
   controllers: [AppController],
   providers: [
     AppService,

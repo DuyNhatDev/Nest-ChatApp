@@ -1,8 +1,18 @@
 import { EmptyContentException } from '@/modules/message/message.error'
-import { MessageType, SendDirectMessageBodyType } from '@/modules/message/message.model'
+import {
+  MessageType,
+  SendDirectMessageBodyType,
+  SendGroupMessageBodyType,
+} from '@/modules/message/message.model'
 import { MessageRepository } from '@/modules/message/message.repository'
 import { ConversationDocument } from '@/schemas/conversation.schema'
 import { Injectable } from '@nestjs/common'
+
+type SendDirectMessageType = SendDirectMessageBodyType & { senderId: string }
+type SendGroupMessageType = SendGroupMessageBodyType & {
+  senderId: string
+  conversation: ConversationDocument
+}
 
 @Injectable()
 export class MessageService {
@@ -13,7 +23,7 @@ export class MessageService {
     content,
     conversationId,
     senderId,
-  }: SendDirectMessageBodyType & { senderId: string }) {
+  }: SendDirectMessageType) {
     if (!content) {
       throw EmptyContentException
     }
@@ -34,6 +44,28 @@ export class MessageService {
     return {
       message: 'Gửi tin nhắn thành công',
       ...messageCreated,
+    }
+  }
+
+  async sendGroupMessage({
+    senderId,
+    content,
+    conversationId,
+    conversation,
+  }: SendGroupMessageType) {
+    if (!content) {
+      throw EmptyContentException
+    }
+    const message = await this.messageRepository.createMessage({
+      conversationId,
+      senderId,
+      content,
+    })
+    this.updateConversationAfterCreateMessage({ conversation, message, senderId })
+    await conversation.save()
+    return {
+      message: 'Gửi tin nhắn thành công',
+      data: message,
     }
   }
 

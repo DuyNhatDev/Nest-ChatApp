@@ -2,9 +2,13 @@ import { Body, Controller, HttpCode, HttpStatus, Post, Req, Res, UseGuards } fro
 import { AuthService } from './auth.service'
 import { ZodResponse } from 'nestjs-zod'
 import { Public } from '@/shared/decorators/auth.decorator'
-import { RefreshTokenResDTO, SignInResDTO, SignUpBodyDTO, SignUpResDTO } from '@/modules/auth/auth.dto'
+import {
+  RefreshTokenResDTO,
+  SignInResDTO,
+  SignUpBodyDTO,
+  SignUpResDTO,
+} from '@/modules/auth/auth.dto'
 import { LocalAuthGuard } from '@/shared/guards/local-auth.guard'
-import { UserType } from '@/modules/user/user.model'
 import type { Request, Response } from 'express'
 import envConfig from '@/config/env.config'
 import ms from 'ms'

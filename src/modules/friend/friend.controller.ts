@@ -32,7 +32,10 @@ export class FriendController {
   @Post('requests/:requestId/decline')
   @HttpCode(HttpStatus.OK)
   @ZodResponse({ type: MessageResDTO })
-  declineFriendRequest(@ActiveUser('userId') userId: string, @Param('requestId') requestId: string) {
+  declineFriendRequest(
+    @ActiveUser('userId') userId: string,
+    @Param('requestId') requestId: string,
+  ) {
     return this.friendService.declineFriendRequest({ requestId, userId })
   }
 

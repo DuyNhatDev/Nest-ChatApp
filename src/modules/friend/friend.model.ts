@@ -16,10 +16,12 @@ export const FriendSchema = z.object({
   userB: ObjectIdSchema,
 })
 
-export const SendFriendRequestBodySchema = z.object({
-  to: ObjectIdSchema,
-  message: z.string().max(300).optional(),
-})
+export const SendFriendRequestBodySchema = z
+  .object({
+    to: ObjectIdSchema,
+    message: z.string().max(300).optional(),
+  })
+  .strict()
 
 export const SendFriendRequestResSchema = z.object({
   request: FriendRequestSchema,

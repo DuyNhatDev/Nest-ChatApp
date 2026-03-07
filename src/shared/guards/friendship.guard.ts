@@ -1,4 +1,10 @@
-import { CanActivate, ExecutionContext, Injectable, BadRequestException, ForbiddenException } from '@nestjs/common'
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  BadRequestException,
+  ForbiddenException,
+} from '@nestjs/common'
 import { Request } from 'express'
 import { MongooseService } from '@/shared/services/mongoose.service'
 
@@ -54,7 +60,7 @@ export class FriendshipGuard implements CanActivate {
     if (notFriends.length > 0) {
       throw new ForbiddenException({
         message: 'Bạn chỉ có thể thêm bạn bè vào nhóm.',
-        notFriends,
+        code: 'NOT_FRIEND_IN_GROUP',
       })
     }
 

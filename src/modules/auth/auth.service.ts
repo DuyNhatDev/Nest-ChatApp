@@ -38,7 +38,7 @@ export class AuthService {
           username,
           email,
           password: hashedPassword,
-          displayName: `${firstName} ${lastName}`,
+          displayName: `${lastName} ${firstName}`,
         })
       }
       return { message: 'Đăng ký thành công.' }
