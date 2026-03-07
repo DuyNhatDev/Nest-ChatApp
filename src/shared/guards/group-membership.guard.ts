@@ -14,12 +14,9 @@ export class GroupMembershipGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest<Request>()
-
     const { conversationId } = request.body
     const userId = (request.user as any).userId
-
     const conversation = await this.mongooseService.conversation.findById(conversationId)
-
     if (!conversation) {
       throw new NotFoundException({
         message: 'Không tìm thấy cuộc trò chuyện',

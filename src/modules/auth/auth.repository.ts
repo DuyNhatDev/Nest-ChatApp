@@ -28,7 +28,7 @@ export class AuthRepository {
   }): Promise<(RefreshTokenType & { user: UserType }) | null> {
     return this.mongooseService.session
       .findOne(refreshToken)
-      .populate('user')
+      .populate('userId')
       .lean<RefreshTokenType & { user: UserType }>()
   }
 }

@@ -74,7 +74,7 @@ export class ConversationService {
       const participants = (c.participants || []).map((p) => {
         const user = p.userId as any
         return {
-          userId: user?._id,
+          _id: user?._id,
           displayName: user?.displayName,
           avatarUrl: user?.avatarUrl ?? null,
           joinedAt: p.joinedAt,

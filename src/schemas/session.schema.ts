@@ -18,10 +18,3 @@ export class Session {
 export const SessionSchema = SchemaFactory.createForClass(Session)
 
 SessionSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 })
-
-SessionSchema.virtual('user', {
-  ref: 'User',
-  localField: 'userId',
-  foreignField: '_id',
-  justOne: true,
-})

@@ -6,7 +6,8 @@ export interface ApiResponse<T> {
   statusCode: number
   success: boolean
   message: string
-  data: T
+  data?: T
+  meta?: any
 }
 
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
@@ -35,38 +36,29 @@ export class TransformInterceptor<T> implements NestInterceptor<T, ApiResponse<T
     const statusCode = response.statusCode
 
     return next.handle().pipe(
-      map((data: any) => {
-        if (data && typeof data === 'object' && 'success' in data && 'message' in data) {
-          return data as ApiResponse<T>
-        }
-
-        let finalMessage = this.getDefaultMessage(request.method)
-        if (data && typeof data === 'object' && 'message' in data) {
-          finalMessage = data.message as string
-          const { message, ...rest } = data
-          data = Object.keys(rest).length > 0 ? rest : undefined
-        }
-
-        if (data && typeof data === 'object' && 'data' in data && 'meta' in data) {
-          return {
-            statusCode,
-            success: true,
-            message: finalMessage,
-            data: data.data,
-            meta: data.meta,
-          }
-        }
-
-        if (data && typeof data === 'object' && 'data' in data) {
-          data = data.data as T
-        }
-
-        return {
+      map((res: any) => {
+        const finalResponse: ApiResponse<T> = {
           statusCode,
           success: true,
-          message: finalMessage,
-          data,
+          message: this.getDefaultMessage(request.method),
         }
+        if (res && typeof res === 'object') {
+          if ('message' in res) {
+            finalResponse.message = res.message
+            const { message, ...rest } = res
+            res = Object.keys(rest).length > 0 ? rest : undefined
+            finalResponse.data = res
+          } else {
+            finalResponse.data = res
+          }
+          if ('data' in res) {
+            finalResponse.data = res.data
+          }
+          if ('meta' in res) {
+            finalResponse.meta = res.meta
+          }
+        }
+        return finalResponse
       }),
     )
   }
