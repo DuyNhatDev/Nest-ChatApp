@@ -68,7 +68,7 @@ export class ConversationService {
     }
   }
 
-  async getConversation({ userId }: { userId: string }) {
+  async getConversations({ userId }: { userId: string }) {
     const conversations = await this.conversationRepository.findConversationsOfUser({ userId })
     const formatted = conversations.map((c) => {
       const participants = (c.participants || []).map((p) => {
@@ -86,10 +86,7 @@ export class ConversationService {
         participants,
       }
     })
-    return {
-      message: 'Lấy danh sách hội thoại thành công',
-      data: formatted,
-    }
+    return formatted
   }
 
   async getMessages({ conversationId, limit = 50, cursor }: GetMessagesType) {
@@ -108,8 +105,8 @@ export class ConversationService {
     }
     messages = messages.reverse()
     return {
-      message: 'Lấy danh sách tin nhắn thành công',
-      data: { messages, nextCursor },
+      messages,
+      nextCursor,
     }
   }
 }

@@ -35,29 +35,27 @@ export const AcceptFriendRequestResSchema = z.object({
   }).partial(),
 })
 
-export const GetAllFriendsResSchema = z.object({
-  data: z.array(UserSchema.pick({ _id: true, displayName: true, avatarUrl: true })),
-})
+export const GetAllFriendsResSchema = z.array(
+  UserSchema.pick({ _id: true, displayName: true, avatarUrl: true }),
+)
 
 export const GetAllFriendRequestsResSchema = z.object({
-  data: z.object({
-    sent: z.array(
-      z.object({
-        _id: ObjectIdSchema,
-        from: ObjectIdSchema,
-        to: UserSchema.pick({ _id: true, username: true, displayName: true, avatarUrl: true }),
-        message: z.string().max(300).optional(),
-      }),
-    ),
-    received: z.array(
-      z.object({
-        _id: ObjectIdSchema,
-        from: UserSchema.pick({ _id: true, username: true, displayName: true, avatarUrl: true }),
-        to: ObjectIdSchema,
-        message: z.string().max(300).optional(),
-      }),
-    ),
-  }),
+  sent: z.array(
+    z.object({
+      _id: ObjectIdSchema,
+      from: ObjectIdSchema,
+      to: UserSchema.pick({ _id: true, username: true, displayName: true, avatarUrl: true }),
+      message: z.string().max(300).optional(),
+    }),
+  ),
+  received: z.array(
+    z.object({
+      _id: ObjectIdSchema,
+      from: UserSchema.pick({ _id: true, username: true, displayName: true, avatarUrl: true }),
+      to: ObjectIdSchema,
+      message: z.string().max(300).optional(),
+    }),
+  ),
 })
 
 export type FriendRequestType = z.infer<typeof FriendRequestSchema>

@@ -21,7 +21,7 @@ export class ConversationController {
 
   @Get()
   getConversations(@ActiveUser('userId') userId: string) {
-    return this.conversationService.getConversation({ userId })
+    return this.conversationService.getConversations({ userId })
   }
 
   @Get(':conversationId/messages')

@@ -2,18 +2,18 @@ import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nes
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
-export interface ApiResponse<T> {
+type ApiResponse = {
   statusCode: number
   success: boolean
   message: string
-  data?: T
+  data?: any
   meta?: any
 }
 
 type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
 @Injectable()
-export class TransformInterceptor<T> implements NestInterceptor<T, ApiResponse<T>> {
+export class TransformInterceptor<T> implements NestInterceptor<T, ApiResponse> {
   private getDefaultMessage(method: HTTPMethod): string {
     switch (method) {
       case 'POST':
@@ -29,7 +29,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, ApiResponse<T
     }
   }
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<ApiResponse<T>> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<ApiResponse> {
     const ctx = context.switchToHttp()
     const request = ctx.getRequest()
     const response = ctx.getResponse()
@@ -37,7 +37,7 @@ export class TransformInterceptor<T> implements NestInterceptor<T, ApiResponse<T
 
     return next.handle().pipe(
       map((res: any) => {
-        const finalResponse: ApiResponse<T> = {
+        const finalResponse: ApiResponse = {
           statusCode,
           success: true,
           message: this.getDefaultMessage(request.method),
@@ -51,11 +51,13 @@ export class TransformInterceptor<T> implements NestInterceptor<T, ApiResponse<T
           } else {
             finalResponse.data = res
           }
-          if ('data' in res) {
-            finalResponse.data = res.data
-          }
-          if ('meta' in res) {
-            finalResponse.meta = res.meta
+          if (res && typeof res === 'object') {
+            if ('data' in res) {
+              finalResponse.data = res.data
+            }
+            if ('meta' in res) {
+              finalResponse.meta = res.meta
+            }
           }
         }
         return finalResponse

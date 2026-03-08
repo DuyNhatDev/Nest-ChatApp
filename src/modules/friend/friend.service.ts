@@ -101,16 +101,10 @@ export class FriendService {
     const friendships = await this.friendRepository.getAllFriends({ userId })
     console.log(friendships)
     if (!friendships) {
-      return {
-        message: 'Chưa có bạn bè',
-        data: [],
-      }
+      return []
     }
     const friends = friendships.map((f) => (f.userA._id.toString() === userId ? f.userB : f.userA))
-    return {
-      message: 'Lấy danh sách bạn bè thành công',
-      data: friends,
-    }
+    return friends
   }
 
   async getAllFriendRequests({ userId }: { userId: string }) {
@@ -118,12 +112,6 @@ export class FriendService {
       this.friendRepository.getAllFriendRequestsSent({ userId }),
       this.friendRepository.getAllFriendRequestsReceived({ userId }),
     ])
-    return {
-      message: 'Lấy danh sách lời mời kết bạn thành công',
-      data: {
-        sent,
-        received,
-      },
-    }
+    return { sent, received }
   }
 }
